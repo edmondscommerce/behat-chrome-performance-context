@@ -1,0 +1,29 @@
+{
+  "name": "edmondscommerce/behat-google-logging-context",
+  "description": "A Behat Context for testing site performance such as ttfb",
+  "keywords": [
+    "Behat",
+    "Testing",
+    "Data",
+    "Browser Testing",
+    "SEO",
+    "Performance"
+  ],
+  "homepage": "https://www.edmondscommerce.co.uk",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "edmondscommerce",
+      "email": "info@edmondscommerce.co.uk"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "edmondscommerce/behat-framework": "1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "EdmondsCommerce\\BehatGoogleLogging\\": "src/"
+    }
+  }
+}
