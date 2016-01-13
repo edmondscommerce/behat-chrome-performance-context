@@ -19,7 +19,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "edmondscommerce/behat-framework": "dev-master"
+    "edmondscommerce/behat-framework": "~1.0"
   },
   "autoload": {
     "psr-4": {
