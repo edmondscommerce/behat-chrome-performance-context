@@ -1,5 +1,5 @@
 {
-  "name": "edmondscommerce/behat-google-logging-context",
+  "name": "edmondscommerce/behat-chrome-performance-context",
   "description": "A Behat Context for testing site performance such as ttfb",
   "keywords": [
     "Behat",
@@ -19,11 +19,11 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "edmondscommerce/behat-framework": "1.0"
+    "edmondscommerce/behat-framework": "dev-master"
   },
   "autoload": {
     "psr-4": {
-      "EdmondsCommerce\\BehatGoogleLogging\\": "src/"
+      "EdmondsCommerce\\BehatChromePerformance\\": "src/"
     }
   }
 }

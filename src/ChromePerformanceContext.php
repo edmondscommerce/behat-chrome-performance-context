@@ -1,6 +1,6 @@
 <?php
 
-namespace EdmondsCommerce\BehatGoogleLogging;
+namespace EdmondsCommerce\BehatChromePerformance;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
@@ -12,7 +12,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
  * Date: 18/05/15
  * Time: 17:10
  */
-class GoogleLoggingContext extends RawMinkContext implements Context, SnippetAcceptingContext
+class ChromePerformanceContext extends RawMinkContext implements Context, SnippetAcceptingContext
 {
 
     protected $_log;
