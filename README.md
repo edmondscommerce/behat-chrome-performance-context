@@ -1,4 +1,4 @@
-#Behat  Context
+#Behat Chrome Performance  Context
 ## By [Edmonds Commerce](https://www.edmondscommerce.co.uk)
 
 Chrome performance monitoring including the checking of broken links and file download cumulative sizes
@@ -20,6 +20,6 @@ default:
             # ...
             contexts:
                 - # ...
-                - EdmondsCommerce\BehatFakerContext\BehatFakerContext
+                - EdmondsCommerce\BehatChromePerformance\ChromePerformanceContext
 
 ```
