@@ -1,6 +1,6 @@
 {
   "name": "edmondscommerce/behat-chrome-performance-context",
-  "description": "A Behat Context for testing site performance such as ttfb",
+  "description": "A Behat Context for testing site performance",
   "keywords": [
     "Behat",
     "Testing",
