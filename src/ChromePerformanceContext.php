@@ -27,10 +27,8 @@ class ChromePerformanceContext extends RawMinkContext implements Context, Snippe
     public function thereAreNoBrokenLinks()
     {
         $log = $this->_getLog();
-        foreach ($log AS $request)
-        {
-            if (isset($request['status']) && $request['status'] != 200)
-            {
+        foreach ($log AS $request) {
+            if (isset($request['status']) && $request['status'] != 200) {
                 throw new \Exception('Page links to non existent resource' . $request['url']);
             }
         }
@@ -45,8 +43,7 @@ class ChromePerformanceContext extends RawMinkContext implements Context, Snippe
      */
     public function thereAreNoMoreThanOfType($number, $type)
     {
-        switch (strtolower($type))
-        {
+        switch (strtolower($type)) {
             case 'image':
                 $contentType = 'image';
                 break;
@@ -64,16 +61,13 @@ class ChromePerformanceContext extends RawMinkContext implements Context, Snippe
         }
 
         $counter = 0;
-        foreach ($this->_getLog() as $request)
-        {
-            if (isset($request['type']) && strpos($request['type'], $contentType) !== false)
-            {
+        foreach ($this->_getLog() as $request) {
+            if (isset($request['type']) && strpos($request['type'], $contentType) !== false) {
                 $counter++;
             }
         }
 
-        if ($counter > $number)
-        {
+        if ($counter > $number) {
             throw new Exception("Maximun number of $type files is $number, found $counter");
         }
     }
@@ -87,16 +81,13 @@ class ChromePerformanceContext extends RawMinkContext implements Context, Snippe
     public function thePageLoadsInUnder($number)
     {
         $totalTime = 0;
-        foreach ($this->_getLog() AS $request)
-        {
-            if (isset($request['type']) && $request['type'] == 'text/html')
-            {
+        foreach ($this->_getLog() AS $request) {
+            if (isset($request['type']) && $request['type'] == 'text/html') {
                 $totalTime = $request['totalTime'];
                 break;
             }
         }
-        if ($totalTime > $number)
-        {
+        if ($totalTime > $number) {
             throw new Exception("Page took $totalTime seconds to load - Acceptable limit is $number");
         }
     }
@@ -110,42 +101,30 @@ class ChromePerformanceContext extends RawMinkContext implements Context, Snippe
     public function theAmountDownloadedIsUnder($number)
     {
         $totalFileSize = 0;
-        foreach ($this->_getLog() AS $request)
-        {
-            if (isset($request['fileSize']))
-            {
+        foreach ($this->_getLog() AS $request) {
+            if (isset($request['fileSize'])) {
                 $totalFileSize += $request['fileSize'];
             }
         }
         $maxFileSize = $this->_convertToMachineReadable($number);
-        if ($totalFileSize > $maxFileSize)
-        {
+        if ($totalFileSize > $maxFileSize) {
             $readable = $this->_convertToHumanReadable($totalFileSize);
-            $number = $this->_convertToHumanReadable($maxFileSize);
+            $number   = $this->_convertToHumanReadable($maxFileSize);
             throw new \Exception("The amount downloaded is $readable. Max size is $number");
         }
     }
 
     protected function _convertToHumanReadable($bytes)
     {
-        if ($bytes >= 1048576)
-        {
+        if ($bytes >= 1048576) {
             $bytes = number_format($bytes / 1048576, 2) . ' MB';
-        }
-        elseif ($bytes >= 1024)
-        {
+        } elseif ($bytes >= 1024) {
             $bytes = number_format($bytes / 1024, 2) . ' KB';
-        }
-        elseif ($bytes > 1)
-        {
+        } elseif ($bytes > 1) {
             $bytes = $bytes . ' bytes';
-        }
-        elseif ($bytes == 1)
-        {
+        } elseif ($bytes == 1) {
             $bytes = $bytes . ' byte';
-        }
-        else
-        {
+        } else {
             $bytes = '0 bytes';
         }
 
@@ -154,11 +133,10 @@ class ChromePerformanceContext extends RawMinkContext implements Context, Snippe
 
     protected function _convertToMachineReadable($phrase)
     {
-        $unit = strtolower(trim($phrase, " \t\n\r\0\x0B1234567890."));
+        $unit    = strtolower(trim($phrase, " \t\n\r\0\x0B1234567890."));
         $numbers = preg_replace("/[^0-9.]/", "", $phrase);
 
-        switch ($unit)
-        {
+        switch ($unit) {
             case 'mb':
                 $multiplier = 1048576;
                 break;
@@ -177,26 +155,29 @@ class ChromePerformanceContext extends RawMinkContext implements Context, Snippe
      * This is used to actually get the logging data. If this throws errors make sure you have the following in your
      * behat.yml file
      *
-     * selenium_session_chrome:
-     *  selenium2:
-     *      browser: chrome
-     *          capabilities:
-     *              extra_capabilities:
-     *                  loggingPrefs:
-     *                      performance: INFO
+     * selenium2:
+     *  browser: chrome
+     *      capabilities:
+     *          extra_capabilities: {
+     *                  "chromeOptions": {
+     *                      perfLoggingPrefs: {
+     *                          'traceCategories': 'blink.console,disabled-by-default-devtools.timeline'
+     *                      }
+     *                  },
+     *                  "loggingPrefs": { "performance": "ALL" }
+     *              }
      *
      *
      * @return array
      */
     protected function _getLog()
     {
-        if (is_null($this->_log))
-        {
-            $driver = $this->getSession()->getDriver();
-            $session = $driver->getWebDriverSession();
+        if (is_null($this->_log)) {
+            $driver      = $this->getSession()->getDriver();
+            $session     = $driver->getWebDriverSession();
             $performance = $session->log('performance');
             $performance = $this->_handleLog($performance);
-            $this->_log = $performance;
+            $this->_log  = $performance;
         }
 
         return $this->_log;
@@ -206,7 +187,7 @@ class ChromePerformanceContext extends RawMinkContext implements Context, Snippe
      * This is used to transform the data that is gathered in the logs into something that is useful. To add more
      * details to this pass through the debug param and this will instead add everything to the log
      *
-     * @param      $log - The log to be processes
+     * @param      $log   - The log to be processes
      * @param bool $debug - True to gather everything
      *
      * @return array - In the following format
@@ -226,58 +207,47 @@ class ChromePerformanceContext extends RawMinkContext implements Context, Snippe
     protected function _handleLog($log, $debug = false)
     {
         $logData = array();
-        foreach ($log AS $logEntry)
-        {
+        foreach ($log AS $logEntry) {
             $messageData = json_decode($logEntry['message']);
-            $message = $messageData->message;
+            $message     = $messageData->message;
 
             $requestId = 'other';
-            if (isset($message->params->requestId))
-            {
+            if (isset($message->params->requestId)) {
                 $requestId = $message->params->requestId;
             }
-            if ($message->method == 'Network.dataReceived' && $debug == false)
-            {
+            if ($message->method == 'Network.dataReceived' && $debug == false) {
                 continue;
             }
             $params = $message->params;
 
 
-            if (isset($params->request))
-            {
-                $url = $params->request->url;
+            if (isset($params->request)) {
+                $url                        = $params->request->url;
                 $logData[$requestId]['url'] = $url;
             }
-            if ($message->method == "Network.requestWillBeSent")
-            {
+            if ($message->method == "Network.requestWillBeSent") {
                 $logData[$requestId]['startTime'] = $params->timestamp;
             }
-            if ($message->method == "Network.responseReceived")
-            {
-                $logData[$requestId]['type'] = $params->response->mimeType;
-                $logData[$requestId]['status'] = $params->response->status;
+            if ($message->method == "Network.responseReceived") {
+                $logData[$requestId]['type']     = $params->response->mimeType;
+                $logData[$requestId]['status']   = $params->response->status;
                 $logData[$requestId]['fileSize'] = 0;
-                if (isset($params->response->headers->{'Content-Length'}))
-                {
+                if (isset($params->response->headers->{'Content-Length'})) {
                     $logData[$requestId]['fileSize'] = $params->response->headers->{'Content-Length'};
                 }
-                if (isset($params->response->headers->{'content-length'}))
-                {
+                if (isset($params->response->headers->{'content-length'})) {
                     $logData[$requestId]['fileSize'] = $params->response->headers->{'content-length'};
                 }
 
             }
 
-            if ($message->method == "Network.loadingFinished")
-            {
+            if ($message->method == "Network.loadingFinished") {
                 $logData[$requestId]['endTime'] = $params->timestamp;
-                if (isset($logData[$requestId]['startTime']))
-                {
+                if (isset($logData[$requestId]['startTime'])) {
                     $logData[$requestId]['totalTime'] = $params->timestamp - $logData[$requestId]['startTime'];
                 }
             }
-            if ($debug == true)
-            {
+            if ($debug == true) {
                 $logData[$requestId][] = $messageData;
             }
         }
