@@ -15,6 +15,14 @@ Install via composer
 ```
 default:
     # ...
+    extensions:
+        Behat\MinkExtension:
+            sessions:
+                selenium_chrome_session:
+                 selenium2:
+                  browser: chrome
+                  capabilities:
+                    extra_capabilities: { "chromeOptions": { "args": ["--start-maximized", "--test-type"], perfLoggingPrefs: { 'traceCategories': 'blink.console,disabled-by-default-devtools.timeline' } }, "loggingPrefs": { "performance": "ALL" } }
     suites:
         default:
             # ...
